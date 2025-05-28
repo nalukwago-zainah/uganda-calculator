@@ -1,0 +1,1635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uganda Financial Calculators | Zai Innovation</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c5f2d;
+            --primary-light: #4a8c4b;
+            --secondary-color: #ffb347;
+            --accent-color: #004e7c;
+            --light-bg: #f8f9fa;
+            --dark-text: #2c3e50;
+            --light-text: #6c757d;
+            --white: #ffffff;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-text);
+            background-color: var(--light-bg);
+            padding: 0;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-light));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .company-logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .company-logo img {
+            max-height: 70px;
+            max-width: 180px;
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+        
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            background: #4a8c4b;
+            border: none;
+            color: var(--white);
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            opacity: 0.8;
+        }
+        
+        .tab-btn.active {
+            opacity: 1;
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50%;
+            height: 3px;
+            background-color: var(--secondary-color);
+            border-radius: 3px;
+        }
+        
+        .tab-btn:hover {
+            opacity: 1;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .calculator-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .calculator-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .input-section, .result-section {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-text);
+        }
+        
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(44, 95, 45, 0.1);
+        }
+        
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: var(--dark-text);
+        }
+        
+        .btn-secondary:hover {
+            background-color: #ffa726;
+            transform: translateY(-2px);
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .result-item:last-child {
+            border-bottom: none;
+        }
+        
+        .result-label {
+            font-weight: 500;
+            color: var(--light-text);
+        }
+        
+        .result-value {
+            font-weight: 600;
+            color: var(--dark-text);
+        }
+        
+        .highlight {
+            font-size: 1.1rem;
+            color: var(--primary-color);
+            font-weight: 700;
+        }
+        
+        .total {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid var(--primary-color);
+        }
+        
+        .section-divider {
+            margin: 25px 0;
+            border: none;
+            height: 1px;
+            background-color: #eee;
+        }
+        
+        /* Salary Slip Styles */
+        #salarySlip {
+            display: none;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 30px;
+            margin-top: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .watermark {
+            position: absolute;
+            opacity: 0.05;
+            font-size: 120px;
+            transform: rotate(-45deg);
+            top: 30%;
+            left: 10%;
+            z-index: 0;
+            pointer-events: none;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .slip-header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .company-header {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+        }
+        
+        .slip-reference {
+            background-color: var(--accent-color);
+            color: var(--white);
+            padding: 10px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            margin: 15px auto;
+            font-family: monospace;
+            max-width: 300px;
+        }
+        
+        .slip-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .slip-total {
+            font-weight: 600;
+            border-top: 1px solid var(--dark-text);
+            padding-top: 10px;
+            margin-top: 10px;
+        }
+        
+        .stamp-area {
+            text-align: right;
+            margin-top: 40px;
+            font-style: italic;
+            color: var(--light-text);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .security-features {
+            font-size: 0.8rem;
+            color: var(--light-text);
+            text-align: center;
+            margin-top: 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .terms {
+            font-size: 0.75rem;
+            color: var(--light-text);
+            margin-top: 30px;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* Mortgage Calculator Specific Styles */
+        .mortgage-summary {
+            background-color: #f0f7f4;
+            padding: 20px;
+            border-radius: var(--border-radius);
+            margin-bottom: 25px;
+        }
+        
+        .estimated-payment {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+        
+        .see-details {
+            color: var(--accent-color);
+            text-decoration: underline;
+            cursor: pointer;
+            margin-bottom: 15px;
+            display: inline-block;
+            font-weight: 500;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .detail-label {
+            color: var(--light-text);
+        }
+        
+        .detail-value {
+            font-weight: 600;
+        }
+        
+        .breakdown {
+            margin-top: 25px;
+        }
+        
+        .breakdown-title {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .chart-container {
+            margin-top: 30px;
+            height: 300px;
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            box-shadow: var(--box-shadow);
+        }
+        
+        /* Responsive Design */
+       @media (max-width: 992px) {
+    .calculator-grid {
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            "input"
+            "results";
+    }
+    
+    .input-section {
+        grid-area: input;
+        order: 1;
+    }
+    
+    .result-section {
+        grid-area: results;
+        order: 2;
+    }
+}
+        
+        @media (max-width: 768px) {
+            .tab-btn {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .calculator-card {
+                padding: 20px;
+            }
+            
+            .calculator-title {
+                font-size: 1.3rem;
+            }
+            
+            .estimated-payment {
+                font-size: 1.5rem;
+            }
+        }
+        
+        /* Animation for results */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .result-section {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        /* Tooltip for info */
+        .info-tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 5px;
+            cursor: help;
+        }
+        
+        .info-tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background-color: var(--dark-text);
+            color: var(--white);
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 10;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.85rem;
+            font-weight: normal;
+        }
+        
+        .info-tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Currency input styling */
+        .currency-input {
+            position: relative;
+        }
+        
+        .currency-input::before {
+            content: 'UGX';
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--light-text);
+            font-weight: 500;
+        }
+        
+        .currency-input input {
+            padding-left: 50px;
+        }
+        
+        /* Toggle switch for NSSF tier */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 30px;
+            margin-left: 10px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .toggle-slider {
+            background-color: var(--primary-color);
+        }
+        
+        input:checked + .toggle-slider:before {
+            transform: translateX(30px);
+        }
+        
+        .toggle-label {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .toggle-text {
+            margin-left: 10px;
+            font-weight: 500;
+        }
+        
+        /* Print styles */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #salarySlip, #salarySlip * {
+                visibility: visible;
+            }
+            #salarySlip {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+            }
+            button {
+                display: none !important;
+            }
+        }
+        .footer-caption {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    color: var(--light-text);
+    font-size: 0.9rem;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="company-logo">
+                <img src="logo-placeholder.png" alt="Zai Innovation Logo" onerror="this.style.display='none'">
+            </div>
+            <h1>Uganda Financial Calculators</h1>
+            <p class="subtitle">Professional tools for payroll and mortgage calculations</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('payroll')">Payroll Calculator</button>
+            <button class="tab-btn" onclick="openTab('mortgage')">Mortgage Calculator</button>
+        </div>
+        
+        <!-- Payroll Calculator Tab -->
+        <div id="payroll" class="tab-content active">
+            <div class="calculator-card">
+                <h2 class="calculator-title">Net Pay Calculator</h2>
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <div class="form-group">
+                            <label for="employeeName">Employee Name</label>
+                            <input type="text" id="employeeName" placeholder="Enter employee name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="employeeID">Employee ID</label>
+                            <input type="text" id="employeeID" placeholder="Employee ID">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="employeePosition">Position</label>
+                            <input type="text" id="employeePosition" placeholder="Enter employee position">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="paymentDate">Payment Date</label>
+                            <input type="date" id="paymentDate">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="paymentMethod">Payment Method</label>
+                            <select id="paymentMethod">
+                                <option value="bank">Bank Transfer</option>
+                                <option value="cash">Cash</option>
+                                <option value="mobile">Mobile Money</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="salaryPeriod">Salary Period</label>
+                            <select id="salaryPeriod">
+                                <option value="monthly">Monthly</option>
+                                <option value="annual">Annual</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="grossSalary">Gross Salary</label>
+                            <input type="number" id="grossSalary" placeholder="Enter gross salary">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>NSSF Tier</label>
+                            <div class="toggle-label">
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="nssfTierToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                                <span class="toggle-text" id="nssfTierText">Tier I (5%)</span>
+                            </div>
+                            <input type="hidden" id="nssfTier" value="tier1">
+                        </div>
+                        
+                        <h3 class="section-title">Allowances</h3>
+                        
+                        <div class="form-group currency-input">
+                            <label for="housingAllowance">Housing Allowance</label>
+                            <input type="number" id="housingAllowance" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="transportAllowance">Transport Allowance</label>
+                            <input type="number" id="transportAllowance" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="medicalAllowance">Medical Allowance</label>
+                            <input type="number" id="medicalAllowance" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="otherDeductions">Other Deductions</label>
+                            <input type="number" id="otherDeductions" placeholder="0">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="paymentNotes">Notes</label>
+                            <textarea id="paymentNotes" placeholder="Any special notes about this payment"></textarea>
+                        </div>
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-primary" onclick="calculateNetPay()">Calculate Net Pay</button>
+                            <button class="btn btn-secondary" onclick="resetForm()">Reset</button>
+                            <button class="btn btn-primary" onclick="generateSalarySlip()" id="exportBtn" disabled>Generate Salary Slip</button>
+                        </div>
+                    </div>
+                    
+                    <div class="result-section">
+                        <h3>Payroll Breakdown</h3>
+                        
+                        <div class="result-item">
+                            <span class="result-label">Employee Name:</span>
+                            <span class="result-value" id="displayName">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Employee ID:</span>
+                            <span class="result-value" id="displayID">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Position:</span>
+                            <span class="result-value" id="displayPosition">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Payment Date:</span>
+                            <span class="result-value" id="displayPaymentDate">-</span>
+                        </div>
+                        
+                        <hr class="section-divider">
+                        
+                        <div class="result-item">
+                            <span class="result-label">Gross Salary:</span>
+                            <span class="result-value" id="displayGross">0 UGX</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Total Allowances:</span>
+                            <span class="result-value" id="totalAllowances">0 UGX</span>
+                        </div>
+                        
+                        <hr class="section-divider">
+                        
+                        <div class="result-item">
+                            <span class="result-label">PAYE Tax:</span>
+                            <span class="result-value" id="paye">0 UGX</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Employee NSSF:</span>
+                            <span class="result-value" id="employeeNssf">0 UGX</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Other Deductions:</span>
+                            <span class="result-value" id="displayOtherDeductions">0 UGX</span>
+                        </div>
+                        
+                        <div class="result-item total highlight">
+                            <span class="result-label">Net Pay:</span>
+                            <span class="result-value" id="netPay">0 UGX</span>
+                        </div>
+                        
+                        <hr class="section-divider">
+                        
+                        <div class="result-item">
+                            <span class="result-label">Employer NSSF:</span>
+                            <span class="result-value" id="employerNssf">0 UGX</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Payment Method:</span>
+                            <span class="result-value" id="displayPaymentMethod">-</span>
+                        </div>
+                        <div class="result-item">
+                            <span class="result-label">Calculated On:</span>
+                            <span class="result-value" id="displayCalculatedOn">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="salarySlip">
+                <div class="watermark">Zai Innovation</div>
+                <div class="slip-header">
+                    <div class="company-header">Zai Innovation</div>
+                    <div>321 Nabugabo Stress, Kampala, Uganda</div>
+                    <div>Phone: +256 740029454 | Email: accounts@zaiinnovation.com</div>
+                    <div class="slip-reference" id="slipReference"></div>
+                </div>
+                <div id="slipEmployeeInfo"></div>
+                <div id="slipPeriodInfo"></div>
+                <div id="slipContent"></div>
+                <div id="slipNotes"></div>
+                <div class="stamp-area">
+                    <p>Official Stamp: _________________________</p>
+                </div>
+                <div id="slipFooter"></div>
+                <div class="security-features">
+                    This document contains security features. Unauthorized duplication is prohibited.
+                </div>
+                <div class="terms">
+                    <p>This is a computer generated payslip and does not require a signature.</p>
+                    <p>All amounts are in Ugandan Shillings (UGX).</p>
+                    <p>Please report any discrepancies within 7 days of receipt.</p>
+                </div>
+                <div class="btn-group" style="justify-content: center; margin-top: 30px;">
+                    <button class="btn btn-primary" onclick="printSalarySlip()">Print Slip</button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('salarySlip').style.display='none'">Close</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mortgage Calculator Tab -->
+        <div id="mortgage" class="tab-content">
+            <div class="calculator-card">
+                <h2 class="calculator-title">Uganda Mortgage Calculator</h2>
+                <div class="calculator-grid">
+                    <div class="input-section">
+                        <div class="form-group currency-input">
+                            <label for="homePrice">Home Price</label>
+                            <input type="number" id="homePrice" value="300000000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="downPaymentPercent">Down Payment (%)</label>
+                            <input type="number" id="downPaymentPercent" value="20" min="0" max="100">
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="downPaymentAmount">Down Payment Amount</label>
+                            <input type="number" id="downPaymentAmount" value="60000000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="loanTerm">Loan Term (years)</label>
+                            <select id="loanTerm">
+                                <option value="10">10 years</option>
+                                <option value="15">15 years</option>
+                                <option value="20">20 years</option>
+                                <option value="25">25 years</option>
+                                <option value="30" selected>30 years</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interestRate">Interest Rate (%)</label>
+                            <input type="number" id="interestRate" step="0.01" value="4.77">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="propertyTaxRate">Property Tax Rate (% per year)</label>
+                            <input type="number" id="propertyTaxRate" step="0.01" value="1.2">
+                        </div>
+                        
+                        <div class="form-group currency-input">
+                            <label for="insurance">Home Insurance (per month)</label>
+                            <input type="number" id="insurance" value="250000">
+                        </div>
+                        
+                        <button class="btn btn-primary" onclick="calculateMortgage()">Calculate Mortgage</button>
+                    </div>
+                    
+                    <div class="result-section">
+                        <div class="mortgage-summary">
+                            <div class="estimated-payment" id="estimatedPayment">Estimated Payment: 0 UGX/mo</div>
+                            <div class="see-details" onclick="toggleDetails()">SEE DETAILS</div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">Home price</span>
+                                <span class="detail-value" id="displayHomePrice">0 UGX</span>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">Loan program</span>
+                                <span class="detail-value" id="displayLoanTerm">-</span>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">Down payment</span>
+                                <span class="detail-value" id="displayDownPayment">-</span>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">Interest rate</span>
+                                <span class="detail-value" id="displayInterestRate">-</span>
+                            </div>
+                            
+                            <div class="detail-row">
+                                <span class="detail-label">Property taxes/year</span>
+                                <span class="detail-value" id="displayPropertyTax">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="breakdown">
+                            <div class="breakdown-title">Payment Breakdown</div>
+                            <div class="breakdown-item">
+                                <span>Principal & Interest</span>
+                                <span id="displayPI">0 UGX</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Insurance</span>
+                                <span id="displayInsurance">0 UGX</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Taxes</span>
+                                <span id="displayTaxes">0 UGX</span>
+                            </div>
+                            <div class="breakdown-item total">
+                                <span>Total Monthly Payment</span>
+                                <span id="displayTotalPayment">0 UGX</span>
+                            </div>
+                        </div>
+                        
+                        <div class="amortization">
+                            <div class="breakdown-title">Loan Details</div>
+                            <div class="detail-row">
+                                <span class="detail-label">Loan amount</span>
+                                <span class="detail-value" id="displayLoanAmount">0 UGX</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Down payment</span>
+                                <span class="detail-value" id="displayDownPaymentAmount">0 UGX</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Interest rate</span>
+                                <span class="detail-value" id="displayAmortInterestRate">-</span>
+                            </div>
+                            <div class="detail-row">
+                                <span class="detail-label">Loan term</span>
+                                <span class="detail-value" id="displayAmortLoanTerm">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="calculator-grid" style="margin-top: 30px;">
+                    <div class="chart-container">
+                        <canvas id="amortizationChart"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="paymentBreakdownChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize charts
+        const amortizationCtx = document.getElementById('amortizationChart').getContext('2d');
+        const paymentCtx = document.getElementById('paymentBreakdownChart').getContext('2d');
+        
+        let amortizationChart = new Chart(amortizationCtx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Principal',
+                        data: [],
+                        backgroundColor: 'rgba(44, 95, 45, 0.2)',
+                        borderColor: 'rgba(44, 95, 45, 1)',
+                        borderWidth: 2,
+                        tension: 0.1
+                    },
+                    {
+                        label: 'Interest',
+                        data: [],
+                        backgroundColor: 'rgba(255, 179, 71, 0.2)',
+                        borderColor: 'rgba(255, 179, 71, 1)',
+                        borderWidth: 2,
+                        tension: 0.1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Loan Amortization Over Time',
+                        font: {
+                            size: 16,
+                            weight: '600'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': ' + formatUGX(context.raw);
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return formatUGX(value);
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(0, 0, 0, 0.05)'
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
+        
+        let paymentBreakdownChart = new Chart(paymentCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Principal & Interest', 'Taxes', 'Insurance'],
+                datasets: [{
+                    data: [0, 0, 0],
+                    backgroundColor: [
+                        'rgba(44, 95, 45, 0.7)',
+                        'rgba(0, 78, 124, 0.7)',
+                        'rgba(255, 179, 71, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(44, 95, 45, 1)',
+                        'rgba(0, 78, 124, 1)',
+                        'rgba(255, 179, 71, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Monthly Payment Breakdown',
+                        font: {
+                            size: 16,
+                            weight: '600'
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return context.label + ': ' + formatUGX(context.raw);
+                            }
+                        }
+                    },
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            boxWidth: 12,
+                            padding: 20
+                        }
+                    }
+                },
+                cutout: '65%'
+            }
+        });
+
+        // Format currency in UGX
+        function formatUGX(amount) {
+            return 'UGX ' + Math.round(amount).toLocaleString('en-US');
+        }
+
+        // Tab navigation
+        function openTab(tabName) {
+            const tabContents = document.getElementsByClassName('tab-content');
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove('active');
+            }
+            
+            const tabButtons = document.getElementsByClassName('tab-btn');
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove('active');
+            }
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        // Calculate monthly mortgage payment
+        function calculateMonthlyPayment(principal, annualRate, years) {
+            const monthlyRate = annualRate / 100 / 12;
+            const payments = years * 12;
+            return principal * monthlyRate * Math.pow(1 + monthlyRate, payments) / 
+                   (Math.pow(1 + monthlyRate, payments) - 1);
+        }
+
+        // Calculate mortgage details
+        function calculateMortgage() {
+            // Get input values
+            const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+            const downPaymentPercent = parseFloat(document.getElementById('downPaymentPercent').value) || 0;
+            const downPaymentAmount = parseFloat(document.getElementById('downPaymentAmount').value) || 0;
+            const loanTerm = parseInt(document.getElementById('loanTerm').value) || 30;
+            const interestRate = parseFloat(document.getElementById('interestRate').value) || 0;
+            const propertyTaxRate = parseFloat(document.getElementById('propertyTaxRate').value) || 0;
+            const insurance = parseFloat(document.getElementById('insurance').value) || 0;
+            
+            // Calculate derived values
+            const loanAmount = homePrice - downPaymentAmount;
+            const monthlyInterestRate = interestRate / 100 / 12;
+            const numberOfPayments = loanTerm * 12;
+            
+            // Calculate monthly principal and interest
+            const monthlyPI = (loanAmount * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, numberOfPayments)) / 
+                             (Math.pow(1 + monthlyInterestRate, numberOfPayments) - 1);
+            
+            // Calculate monthly property tax
+            const annualPropertyTax = homePrice * (propertyTaxRate / 100);
+            const monthlyPropertyTax = annualPropertyTax / 12;
+            
+                        // Calculate total monthly payment
+            const totalMonthlyPayment = monthlyPI + monthlyPropertyTax + insurance;
+            
+            // Update display values
+            document.getElementById('estimatedPayment').textContent = `Estimated Payment: ${formatUGX(totalMonthlyPayment)}/mo`;
+            document.getElementById('displayHomePrice').textContent = formatUGX(homePrice);
+            document.getElementById('displayLoanTerm').textContent = `${loanTerm} years fixed`;
+            document.getElementById('displayDownPayment').textContent = `${downPaymentPercent}% (${formatUGX(downPaymentAmount)})`;
+            document.getElementById('displayInterestRate').textContent = `${interestRate}%`;
+            document.getElementById('displayPropertyTax').textContent = `${propertyTaxRate}% (${formatUGX(annualPropertyTax)})`;
+            
+            document.getElementById('displayTotalPayment').textContent = formatUGX(totalMonthlyPayment);
+            document.getElementById('displayInsurance').textContent = formatUGX(insurance);
+            document.getElementById('displayTaxes').textContent = formatUGX(monthlyPropertyTax);
+            document.getElementById('displayPI').textContent = formatUGX(monthlyPI);
+            
+            document.getElementById('displayLoanAmount').textContent = formatUGX(loanAmount);
+            document.getElementById('displayDownPaymentAmount').textContent = formatUGX(downPaymentAmount);
+            document.getElementById('displayAmortInterestRate').textContent = `${interestRate}%`;
+            document.getElementById('displayAmortLoanTerm').textContent = `${loanTerm} years`;
+            
+            // Update charts
+            updateCharts(loanAmount, interestRate, loanTerm, monthlyPI, monthlyPropertyTax, insurance);
+        }
+
+        // Update charts with new data
+        function updateCharts(loanAmount, interestRate, loanTerm, monthlyPI, monthlyTax, monthlyInsurance) {
+            // Update payment breakdown chart
+            paymentBreakdownChart.data.datasets[0].data = [
+                monthlyPI,
+                monthlyTax,
+                monthlyInsurance
+            ];
+            paymentBreakdownChart.update();
+            
+            // Calculate amortization schedule for the line chart
+            const monthlyRate = interestRate / 100 / 12;
+            const numberOfPayments = loanTerm * 12;
+            let balance = loanAmount;
+            let principalData = [];
+            let interestData = [];
+            let labels = [];
+            
+            // Calculate for each year
+            for (let year = 1; year <= loanTerm; year++) {
+                let yearlyPrincipal = 0;
+                let yearlyInterest = 0;
+                
+                // Calculate for each month in the year
+                for (let month = 1; month <= 12; month++) {
+                    const monthNumber = (year - 1) * 12 + month;
+                    if (monthNumber > numberOfPayments) break;
+                    
+                    const interestPayment = balance * monthlyRate;
+                    const principalPayment = monthlyPI - interestPayment;
+                    
+                    yearlyPrincipal += principalPayment;
+                    yearlyInterest += interestPayment;
+                    balance -= principalPayment;
+                }
+                
+                principalData.push(yearlyPrincipal);
+                interestData.push(yearlyInterest);
+                labels.push(`Year ${year}`);
+            }
+            
+            // Update the chart data
+            amortizationChart.data.labels = labels;
+            amortizationChart.data.datasets[0].data = principalData;
+            amortizationChart.data.datasets[1].data = interestData;
+            amortizationChart.update();
+        }
+
+        // Toggle details visibility
+        function toggleDetails() {
+            const breakdown = document.querySelector('.breakdown');
+            const amortization = document.querySelector('.amortization');
+            
+            if (breakdown.style.display === 'none') {
+                breakdown.style.display = 'block';
+                amortization.style.display = 'block';
+                document.querySelector('.see-details').textContent = 'HIDE DETAILS';
+            } else {
+                breakdown.style.display = 'none';
+                amortization.style.display = 'none';
+                document.querySelector('.see-details').textContent = 'SEE DETAILS';
+            }
+        }
+
+        // Sync down payment percentage and amount
+        document.getElementById('downPaymentPercent').addEventListener('input', function() {
+            const percent = parseFloat(this.value) || 0;
+            const homePrice = parseFloat(document.getElementById('homePrice').value) || 0;
+            const downPaymentAmount = Math.round(homePrice * percent / 100);
+            document.getElementById('downPaymentAmount').value = downPaymentAmount;
+        });
+        
+        document.getElementById('downPaymentAmount').addEventListener('input', function() {
+            const amount = parseFloat(this.value) || 0;
+            const homePrice = parseFloat(document.getElementById('homePrice').value) || 1;
+            const percent = ((amount / homePrice) * 100).toFixed(2);
+            document.getElementById('downPaymentPercent').value = percent;
+        });
+        
+        document.getElementById('homePrice').addEventListener('input', function() {
+            const homePrice = parseFloat(this.value) || 0;
+            const percent = parseFloat(document.getElementById('downPaymentPercent').value) || 0;
+            const downPaymentAmount = Math.round(homePrice * percent / 100);
+            document.getElementById('downPaymentAmount').value = downPaymentAmount;
+        });
+
+        // NSSF Tier toggle functionality
+        document.getElementById('nssfTierToggle').addEventListener('change', function() {
+            const nssfTierText = document.getElementById('nssfTierText');
+            const nssfTier = document.getElementById('nssfTier');
+            
+            if (this.checked) {
+                nssfTierText.textContent = 'Tier II (10%)';
+                nssfTier.value = 'tier2';
+            } else {
+                nssfTierText.textContent = 'Tier I (5%)';
+                nssfTier.value = 'tier1';
+            }
+        });
+
+        // Set default payment date to today
+        document.getElementById('paymentDate').valueAsDate = new Date();
+
+        // Store calculation results
+        let calculationResults = {
+            employeeName: '',
+            employeeID: '',
+            employeePosition: '',
+            paymentDate: '',
+            paymentMethod: '',
+            period: '',
+            grossSalary: 0,
+            totalAllowances: 0,
+            paye: 0,
+            employeeNssf: 0,
+            otherDeductions: 0,
+            netPay: 0,
+            employerNssf: 0,
+            paymentNotes: '',
+            calculatedOn: ''
+        };
+
+        // Generate a professional reference number
+        function generateReferenceNumber() {
+            const date = new Date();
+            const year = date.getFullYear().toString().slice(-2);
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const day = date.getDate().toString().padStart(2, '0');
+            const random = Math.floor(Math.random() * 900 + 100);
+            return `ZAI-${year}${month}${day}-${random}`;
+        }
+
+        function calculateNetPay() {
+            // Get input values
+            const employeeName = document.getElementById('employeeName').value;
+            const employeeID = document.getElementById('employeeID').value;
+            const employeePosition = document.getElementById('employeePosition').value;
+            const paymentDate = document.getElementById('paymentDate').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const salaryPeriod = document.getElementById('salaryPeriod').value;
+            const grossSalary = parseFloat(document.getElementById('grossSalary').value) || 0;
+            const nssfTier = document.getElementById('nssfTier').value;
+            const housingAllowance = parseFloat(document.getElementById('housingAllowance').value) || 0;
+            const transportAllowance = parseFloat(document.getElementById('transportAllowance').value) || 0;
+            const medicalAllowance = parseFloat(document.getElementById('medicalAllowance').value) || 0;
+            const otherDeductions = parseFloat(document.getElementById('otherDeductions').value) || 0;
+            const paymentNotes = document.getElementById('paymentNotes').value;
+            
+            // Validate required fields
+            if (!employeeName) {
+                alert("Please enter employee name");
+                return;
+            }
+            
+            if (!employeePosition) {
+                alert("Please enter employee position");
+                return;
+            }
+            
+            if (!grossSalary || grossSalary <= 0) {
+                alert("Please enter a valid gross salary");
+                return;
+            }
+            
+            // Adjust for annual salary if needed
+            const adjustedGrossSalary = salaryPeriod === 'annual' ? grossSalary / 12 : grossSalary;
+            
+            // Calculate total allowances
+            const totalAllowances = housingAllowance + transportAllowance + medicalAllowance;
+            
+            // Calculate taxable income (Gross + Allowances)
+            const taxableIncome = adjustedGrossSalary + totalAllowances;
+            
+            // Calculate PAYE (Uganda tax bands - 2024 rates)
+            let paye = 0;
+            if (taxableIncome > 5000000) {
+                paye = (taxableIncome - 5000000) * 0.3 + 1470000 * 0.2 + 335000 * 0.1;
+            } else if (taxableIncome > 3350000) {
+                paye = (taxableIncome - 3350000) * 0.2 + 335000 * 0.1;
+            } else if (taxableIncome > 335000) {
+                paye = (taxableIncome - 335000) * 0.1;
+            }
+            
+            // Calculate NSSF
+            let employeeNssf = 0;
+            let employerNssf = 0;
+            const nssfRateEmployee = nssfTier === 'tier1' ? 0.05 : 0.1;
+            const nssfRateEmployer = 0.1; // Employer always pays 10%
+            
+            employeeNssf = adjustedGrossSalary * nssfRateEmployee;
+            employerNssf = adjustedGrossSalary * nssfRateEmployer;
+            
+            // Calculate net pay
+            const totalDeductions = paye + employeeNssf + otherDeductions;
+            const netPay = adjustedGrossSalary + totalAllowances - totalDeductions;
+            
+            // Get payment method text
+            const paymentMethodText = {
+                'bank': 'Bank Transfer',
+                'cash': 'Cash',
+                'mobile': 'Mobile Money',
+                'other': 'Other'
+            }[paymentMethod];
+            
+            // Store results
+            calculationResults = {
+                employeeName: employeeName,
+                employeeID: employeeID,
+                employeePosition: employeePosition,
+                paymentDate: paymentDate,
+                paymentMethod: paymentMethodText,
+                period: salaryPeriod === 'monthly' ? 'Monthly' : 'Annual',
+                grossSalary: adjustedGrossSalary,
+                totalAllowances: totalAllowances,
+                paye: paye,
+                employeeNssf: employeeNssf,
+                otherDeductions: otherDeductions,
+                netPay: netPay,
+                employerNssf: employerNssf,
+                paymentNotes: paymentNotes,
+                calculatedOn: new Date().toLocaleString()
+            };
+            
+            // Display results
+            document.getElementById('displayName').textContent = employeeName;
+            document.getElementById('displayID').textContent = employeeID || '-';
+            document.getElementById('displayPosition').textContent = employeePosition;
+            document.getElementById('displayPaymentDate').textContent = paymentDate || '-';
+            document.getElementById('displayGross').textContent = formatUGX(adjustedGrossSalary);
+            document.getElementById('totalAllowances').textContent = formatUGX(totalAllowances);
+            document.getElementById('paye').textContent = formatUGX(paye);
+            document.getElementById('employeeNssf').textContent = formatUGX(employeeNssf);
+            document.getElementById('displayOtherDeductions').textContent = formatUGX(otherDeductions);
+            document.getElementById('netPay').textContent = formatUGX(netPay);
+            document.getElementById('employerNssf').textContent = formatUGX(employerNssf);
+            document.getElementById('displayPaymentMethod').textContent = paymentMethodText;
+            document.getElementById('displayCalculatedOn').textContent = new Date().toLocaleString();
+            
+            // Enable export button
+            document.getElementById('exportBtn').disabled = false;
+            
+            // Scroll to results for better UX
+            document.querySelector('.result-section').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetForm() {
+            // Reset all input fields
+            document.getElementById('employeeName').value = '';
+            document.getElementById('employeeID').value = '';
+            document.getElementById('employeePosition').value = '';
+            document.getElementById('paymentDate').valueAsDate = new Date();
+            document.getElementById('paymentMethod').value = 'bank';
+            document.getElementById('salaryPeriod').value = 'monthly';
+            document.getElementById('grossSalary').value = '';
+            document.getElementById('nssfTierToggle').checked = false;
+            document.getElementById('nssfTierText').textContent = 'Tier I (5%)';
+            document.getElementById('nssfTier').value = 'tier1';
+            document.getElementById('housingAllowance').value = '';
+            document.getElementById('transportAllowance').value = '';
+            document.getElementById('medicalAllowance').value = '';
+            document.getElementById('otherDeductions').value = '';
+            document.getElementById('paymentNotes').value = '';
+            
+            // Reset results display
+            document.getElementById('displayName').textContent = '-';
+            document.getElementById('displayID').textContent = '-';
+            document.getElementById('displayPosition').textContent = '-';
+            document.getElementById('displayPaymentDate').textContent = '-';
+            document.getElementById('displayGross').textContent = formatUGX(0);
+            document.getElementById('totalAllowances').textContent = formatUGX(0);
+            document.getElementById('paye').textContent = formatUGX(0);
+            document.getElementById('employeeNssf').textContent = formatUGX(0);
+            document.getElementById('displayOtherDeductions').textContent = formatUGX(0);
+            document.getElementById('netPay').textContent = formatUGX(0);
+            document.getElementById('employerNssf').textContent = formatUGX(0);
+            document.getElementById('displayPaymentMethod').textContent = '-';
+            document.getElementById('displayCalculatedOn').textContent = '-';
+            
+            // Disable export button
+            document.getElementById('exportBtn').disabled = true;
+        }
+
+        function generateSalarySlip() {
+            // Generate reference number
+            const referenceNumber = generateReferenceNumber();
+            document.getElementById('slipReference').textContent = `PAYSLIP #${referenceNumber}`;
+            
+            // Format payment date
+            const paymentDate = calculationResults.paymentDate ? 
+                new Date(calculationResults.paymentDate).toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                }) : '-';
+            
+            // Populate employee info
+            const employeeInfo = `
+                <div class="slip-row">
+                    <span>Employee Name:</span>
+                    <span>${calculationResults.employeeName}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Employee ID:</span>
+                    <span>${calculationResults.employeeID || '-'}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Position:</span>
+                    <span>${calculationResults.employeePosition}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Payment Date:</span>
+                    <span>${paymentDate}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Payment Method:</span>
+                    <span>${calculationResults.paymentMethod}</span>
+                </div>
+            `;
+            document.getElementById('slipEmployeeInfo').innerHTML = employeeInfo;
+            
+            // Populate period info
+            const periodInfo = `
+                <div class="slip-row">
+                    <span>Salary Period:</span>
+                    <span>${calculationResults.period}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Payslip Generated On:</span>
+                    <span>${new Date(calculationResults.calculatedOn).toLocaleString()}</span>
+                </div>
+                <hr class="section-divider">
+            `;
+            document.getElementById('slipPeriodInfo').innerHTML = periodInfo;
+            
+            // Calculate allowance distribution (equal for display purposes)
+            const allowanceDistribution = calculationResults.totalAllowances / 3;
+            
+            // Populate salary details
+            const salaryDetails = `
+                <h3 style="margin-bottom: 15px;">Earnings</h3>
+                <div class="slip-row">
+                    <span>Basic Salary:</span>
+                    <span>${formatUGX(calculationResults.grossSalary)}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Housing Allowance:</span>
+                    <span>${formatUGX(allowanceDistribution)}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Transport Allowance:</span>
+                    <span>${formatUGX(allowanceDistribution)}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Medical Allowance:</span>
+                    <span>${formatUGX(allowanceDistribution)}</span>
+                </div>
+                <div class="slip-row slip-total">
+                    <span>Gross Salary:</span>
+                    <span>${formatUGX(calculationResults.grossSalary + calculationResults.totalAllowances)}</span>
+                </div>
+                
+                <h3 style="margin: 20px 0 15px;">Deductions</h3>
+                <div class="slip-row">
+                    <span>PAYE Tax:</span>
+                    <span>${formatUGX(calculationResults.paye)}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Employee NSSF:</span>
+                    <span>${formatUGX(calculationResults.employeeNssf)}</span>
+                </div>
+                <div class="slip-row">
+                    <span>Other Deductions:</span>
+                    <span>${formatUGX(calculationResults.otherDeductions)}</span>
+                </div>
+                <div class="slip-row slip-total">
+                    <span>Total Deductions:</span>
+                    <span>${formatUGX(calculationResults.paye + calculationResults.employeeNssf + calculationResults.otherDeductions)}</span>
+                </div>
+                
+                <div class="slip-row highlight" style="font-size: 1.2em; margin: 25px 0;">
+                    <span>NET PAY:</span>
+                    <span>${formatUGX(calculationResults.netPay)}</span>
+                </div>
+                
+                <div class="slip-row" style="margin-top: 20px;">
+                    <span>Employer NSSF Contribution:</span>
+                    <span>${formatUGX(calculationResults.employerNssf)}</span>
+                </div>
+                <div class="footer-caption">
+    Made by Nalukwago Zainah | Student @ Break Though Tech
+</div>
+            `;
+            document.getElementById('slipContent').innerHTML = salaryDetails;
+            
+            // Add notes if available
+            if (calculationResults.paymentNotes) {
+                document.getElementById('slipNotes').innerHTML = `
+                    <div style="margin-top: 30px;">
+                        <strong>Notes:</strong>
+                        <p style="margin-top: 5px;">${calculationResults.paymentNotes}</p>
+                    </div>
+                `;
+            } else {
+                document.getElementById('slipNotes').innerHTML = '';
+            }
+            
+            // Add footer with reference
+            document.getElementById('slipFooter').innerHTML = `
+                <div style="margin-top: 40px; text-align: center; font-size: 0.8em;">
+                    <p>Reference: ${referenceNumber}</p>
+                </div>
+            `;
+            
+            // Show the salary slip
+            document.getElementById('salarySlip').style.display = 'block';
+            
+            // Scroll to salary slip for better UX
+            document.getElementById('salarySlip').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function printSalarySlip() {
+            // Hide the print button before printing
+            const buttons = document.querySelectorAll('#salarySlip button');
+            buttons.forEach(button => {
+                button.style.display = 'none';
+            });
+            
+            // Print the salary slip
+            window.print();
+            
+            // Show the buttons again after printing
+            buttons.forEach(button => {
+                button.style.display = '';
+            });
+        }
+
+        // Calculate mortgage on page load
+        window.onload = function() {
+            calculateMortgage();
+            document.getElementById('paymentDate').valueAsDate = new Date();
+        };
+
+        // Scroll to input section on mobile when page loads
+window.addEventListener('DOMContentLoaded', function() {
+    if (window.innerWidth <= 992) {
+        document.querySelector('.input-section').scrollIntoView({
+            behavior: 'smooth'
+        });
+    }
+});
+        
+        
+    </script>
+    
+</body>
+</html>
